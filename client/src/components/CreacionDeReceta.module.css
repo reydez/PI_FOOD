@@ -1,0 +1,150 @@
+form {
+  width: 90%;
+  max-width: 43rem;
+  padding: 1rem;
+  border-radius: 12px;
+  background-color: white;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  margin: 1.5rem auto;
+}
+
+.btnRegresar {
+  border: 1px solid red;
+  width: 90%;
+  margin: 1rem auto;
+  padding: 1rem;
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 0px 10px;
+}
+
+.btnRegresar ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.btnRegresar ul li a {
+  text-decoration: none;
+  color: red;
+  font-weight: bold;
+  transition: all 400ms;
+}
+
+.btnRegresar ul li a:hover {
+  color: #ccc;
+}
+
+.titulo {
+  /* border: 1px solid red; */
+  text-align: center;
+}
+
+.titulo h1 {
+  margin-top: 0;
+  color: red;
+}
+
+.formControl {
+  margin-bottom: 1rem;
+}
+
+.formControl input,
+.formControl label,
+.formControl textarea {
+  display: block;
+}
+
+.formControl label {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.formControl input,
+.formControl textarea {
+  font: inherit;
+  padding: 0.5rem;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  width: 20rem;
+  max-width: 100%;
+  transition: all 400ms;
+}
+
+.formControl input:focus,
+.formControl textarea:focus {
+  outline: none;
+  border-color: #d31919;
+  background-color: #fdd4d4;
+}
+
+.controlGroup {
+  display: flex;
+  column-gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.controlGroup .formControl {
+  min-width: 15rem;
+  flex: 1;
+}
+
+.controlGroup .formControl textarea {
+  resize: none;
+}
+
+.formActions {
+  /* border: 1px solid #d31919; */
+  width: 21rem;
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: end;
+  align-items: flex-end;
+}
+
+.formActions button {
+  font: inherit;
+  background-color: red;
+  color: white;
+  border: 1px solid red;
+  padding: 0.5rem 1.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 400ms;
+}
+
+.formActions button:hover,
+.formActions button:focus {
+  background: white;
+  color: red;
+}
+
+.invalid input,
+.invalid textarea {
+  border: 1px solid #b40e0e;
+  background-color: #fddddd;
+}
+
+.invalid input:focus,
+.invalid textarea:focus {
+  border-color: #ff2600;
+  background-color: #fbdad2;
+}
+
+.errorText {
+  color: red;
+  margin: 0;
+}
+
+.errorText p {
+  font-weight: bolder;
+}
+
+@media (max-width: 440px) {
+  .formActions button {
+    width: 100%;
+  }
+
+  .btnRegresar {
+    text-align: center;
+  }
+}
