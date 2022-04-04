@@ -46,10 +46,28 @@
   margin: 0;
   padding: 0;
   overflow: auto;
-  max-width: 290px;
+  max-width: 400px;
 }
 
 .infoContainer ul li {
   list-style: none;
-  margin: 1em 0;
+  margin: 0.5em 0;
+}
+
+.diets {
+  margin: 0 1rem;
+  display: flex;
+  justify-content: start;
+  overflow: auto;
+}
+
+.diets h6 {
+  margin: 0.6rem 0.5rem;
+  border-radius: 10px;
+  text-align: center;
+  padding: 5px;
+  border: 1px solid red;
+}
+.diets h6:first-child {
+  margin-left: 0;
 }

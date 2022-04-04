@@ -1,9 +1,25 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import classes from "./PaginaPrincipal.module.css";
 import RecipeCard from "./RecipeCard";
 import { Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { getRecipes } from "../store/actions";
 
 const PaginaPrincipal = () => {
+  const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(false);
+  const recipes = useSelector((state) => state.recipes);
+
+  useEffect(() => {
+    const loadRecipes = async () => {
+      setIsLoading(true);
+      await dispatch(getRecipes());
+      setIsLoading(false);
+    };
+
+    loadRecipes();
+  }, [dispatch]);
+
   return (
     <div className={classes.container}>
       <header>
@@ -18,7 +34,7 @@ const PaginaPrincipal = () => {
         <nav>
           <ul>
             <li>
-              Busqueda por nombre: <input type="text" />
+              Busqueda por nombre: <input type="text" /> <button>Buscar</button>
             </li>
             <li>
               Filtrar por tipo de dieta: <select name="" id=""></select>
@@ -54,16 +70,19 @@ const PaginaPrincipal = () => {
         <button>9</button>
         <button>10</button>
       </div>
+
       <section>
-        <RecipeCard />
-        <RecipeCard />
-        <RecipeCard />
-        <RecipeCard />
-        <RecipeCard />
-        <RecipeCard />
-        <RecipeCard />
-        <RecipeCard />
-        <RecipeCard />
+        {isLoading && <h3>Loading...</h3>}
+        {!isLoading &&
+          recipes.map((recipe) => (
+            <RecipeCard
+              key={recipe.id}
+              id={recipe.id}
+              title={recipe.title}
+              image={recipe.image}
+              diets={recipe.diets}
+            />
+          ))}
       </section>
     </div>
   );

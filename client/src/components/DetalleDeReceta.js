@@ -1,9 +1,22 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect } from "react";
 import classes from "./DetalleDeReceta.module.css";
-import { Link } from "react-router-dom";
-import img from "./recipes.jpg";
+import { Link, useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { getRecipeDetails } from "../store/actions";
 
 const DetalleDeReceta = () => {
+  let { idReceta } = useParams();
+  const dispatch = useDispatch();
+  const recetaDetails = useSelector((state) => state.recipe);
+
+  useEffect(() => {
+    dispatch(getRecipeDetails(idReceta));
+  }, [idReceta, dispatch]);
+
+  const img = recetaDetails.image
+    ? recetaDetails.image
+    : "https://dummyimage.com/600x400/000/fff.jpg&text=Food+Image";
+
   return (
     <Fragment>
       <div className={classes.btnRegresar}>
@@ -21,62 +34,44 @@ const DetalleDeReceta = () => {
           <div className={classes.infoContainer}>
             <ul>
               <li>
-                <span>Nombre:</span>aporradillo
+                <span>Nombre:</span>
+                {recetaDetails.title}
               </li>
               <li>
-                <span>Tipo de plato:</span>plato fuerte
+                <span>Tipo de plato:</span>
+                {recetaDetails.dishTypes.map((dt) => "(" + dt + ")")}
               </li>
               <li>
-                <span>Tipo de dieta:</span>full
+                <span>Tipo de dieta:</span>
+                {recetaDetails.diets.map((diet) =>
+                  typeof diet === "object"
+                    ? "(" + diet.nombre + ")"
+                    : "(" + diet + ")"
+                )}
               </li>
               <li>
-                <span>Resumen del plato:</span>chulada
+                <span>Resumen del plato:</span>
+                {recetaDetails.summary.replace(/(<([^>]+)>)/gi, "")}
               </li>
               <li>
-                <span>Puntuación:</span>90
+                <span>Puntuación:</span>
+                {recetaDetails.spoonacularScore}
               </li>
               <li>
-                <span>Nivel de comida saludable:</span>2
+                <span>Nivel de comida saludable:</span>
+                {recetaDetails.healthScore}
               </li>
               <li>
-                <span>Paso a paso:</span>Lorem ipsum dolor sit amet consectetur
-                adipisicing elit. Commodi, iste unde reiciendis tenetur, alias
-                eum quis dolore ab eveniet earum incidunt nisi tempora
-                reprehenderit deserunt temporibus quidem ad quibusdam
-                laboriosam! Lorem ipsum dolor sit amet consectetur adipisicing
-                elit. Doloribus alias molestiae quis corporis quas in
-                consectetur, harum, blanditiis obcaecati sunt fuga minima,
-                laborum voluptatem enim aspernatur animi! Soluta, praesentium
-                et. Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Neque asperiores ducimus doloremque hic, iure facilis, sequi
-                delectus libero, deleniti corrupti eos vitae vel molestias ex
-                itaque aperiam officia tempore veniam! Lorem ipsum dolor sit
-                amet consectetur adipisicing elit. Magnam porro quia iusto ipsa
-                iure corporis quidem nam id adipisci inventore quos voluptates
-                exercitationem fuga perferendis labore, nihil reprehenderit
-                deleniti dolores! Lorem ipsum dolor sit amet consectetur
-                adipisicing elit. Nihil, dolorem fugiat quam saepe minus
-                voluptates error quidem iure laudantium eligendi. Adipisci earum
-                impedit officia atque dolore asperiores, veniam cupiditate ut!
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Cumque
-                sapiente, facilis laboriosam a itaque unde doloremque ratione
-                nihil expedita et necessitatibus? Alias atque nihil harum,
-                debitis nostrum omnis obcaecati iusto? Lorem ipsum dolor sit
-                amet consectetur, adipisicing elit. Reiciendis unde possimus
-                doloremque, quidem dolores rem inventore voluptate vel nostrum,
-                minima, quo cum voluptatibus aliquid id totam veritatis
-                recusandae alias provident? Lorem ipsum dolor sit amet
-                consectetur adipisicing elit. Quisquam laborum deleniti fugiat
-                quos nulla iure impedit in, quas cumque amet voluptates
-                explicabo consectetur libero consequuntur molestias, quo unde
-                tempore reprehenderit. Lorem ipsum dolor sit amet consectetur
-                adipisicing elit. Inventore eius praesentium minus aliquid rerum
-                magnam, tenetur ab impedit. Atque, distinctio explicabo. Quidem
-                accusantium, facere doloremque perspiciatis ullam exercitationem
-                voluptas quo? Lorem, ipsum dolor sit amet consectetur
-                adipisicing elit. Voluptatibus rem, neque quasi consequuntur
-                quas numquam eos perferendis doloribus modi maiores ut ea libero
-                dolores culpa velit, recusandae earum aperiam fugit.
+                <span>Paso a paso:</span>{" "}
+                <ul>
+                  {recetaDetails.steps.length === 0
+                    ? "Esta receta no tiene pasos"
+                    : recetaDetails.steps.map((step, index) => (
+                        <li>
+                          <strong>Paso {index + 1}</strong>: {step}
+                        </li>
+                      ))}
+                </ul>
               </li>
             </ul>
           </div>

@@ -1,12 +1,13 @@
 const { Router } = require("express");
 const axios = require("axios");
 const { Recipe, Diet, op } = require("../db.js");
+require("dotenv").config();
 // Importar todos los routers;
 // Ejemplo: const authRouter = require('./auth.js');
 
 const router = Router();
 
-const api_key = "1e074df89f284eba981b588a5615b9e9";
+const api_key = process.env.API_KEY;
 
 // Configurar los routers
 // Ejemplo: router.use('/auth', authRouter);
@@ -15,20 +16,38 @@ router.get("/recipes", async (req, res) => {
     `https://api.spoonacular.com/recipes/complexSearch?apiKey=${api_key}&addRecipeInformation=true&number=100`
   );
 
-  const recipes = await Recipe.findAll();
+  const recipes = response.data.results.map((recipe) => {
+    return {
+      id: recipe.id,
+      title: recipe.title,
+      summary: recipe.summary,
+      spoonacularScore: recipe.spoonacularScore,
+      healthScore: recipe.healthScore,
+      diets: recipe.diets,
+      image: recipe.image,
+      steps:
+        recipe.analyzedInstructions.length === 0
+          ? []
+          : recipe.analyzedInstructions[0].steps.map((step) => {
+              return step.step;
+            }),
+    };
+  });
 
-  const all = response.data.results.concat(recipes);
+  const dbRecipes = await Recipe.findAll({ include: Diet });
 
-  if (req.query.name) {
-    var { name } = req.query;
-    name = name[0].toUpperCase() + name.slice(1).toLowerCase();
+  const all = recipes.concat(dbRecipes);
 
-    const filtered = all.filter((recipe) => recipe.title.includes(name));
+  if (req.query.title) {
+    var { title } = req.query;
+    title = title[0].toUpperCase() + title.slice(1).toLowerCase();
+
+    const filtered = all.filter((recipe) => recipe.title.includes(title));
 
     if (!filtered.length) {
       return res
         .status(404)
-        .json({ msg: "Error no se pudo encontrar la receta" });
+        .json({ msg: "Error no se pudo encontrar la receta que buscaba" });
     }
 
     return res.json(filtered);
@@ -44,11 +63,30 @@ router.get("/recipes/:idReceta", async (req, res) => {
     `https://api.spoonacular.com/recipes/complexSearch?apiKey=${api_key}&addRecipeInformation=true&number=100`
   );
 
-  const recipes = await Recipe.findAll();
+  const recipes = response.data.results.map((recipe) => {
+    return {
+      id: recipe.id,
+      title: recipe.title,
+      summary: recipe.summary,
+      spoonacularScore: recipe.spoonacularScore,
+      healthScore: recipe.healthScore,
+      diets: recipe.diets,
+      image: recipe.image,
+      dishTypes: recipe.dishTypes,
+      steps:
+        recipe.analyzedInstructions.length === 0
+          ? []
+          : recipe.analyzedInstructions[0].steps.map((step) => {
+              return step.step;
+            }),
+    };
+  });
 
-  const all = response.data.results.concat(recipes);
+  const dbRecipes = await Recipe.findAll({ include: Diet });
 
-  const found = all.find((recipe) => recipe.id === idReceta);
+  const all = recipes.concat(dbRecipes);
+
+  const found = all.find((recipe) => recipe.id === Number(idReceta));
 
   if (!found) {
     return res
@@ -59,20 +97,34 @@ router.get("/recipes/:idReceta", async (req, res) => {
   return res.json(found);
 });
 
-router.get("/types", (req, res) => {});
+router.get("/types", async (req, res) => {
+  const diets = await Diet.findAll();
+
+  res.json(diets);
+});
 
 router.post("/recipe", async (req, res) => {
-  const { title, resumen, puntuacion, nivel, pasoapaso } = req.body;
+  const { title, summary, spoonacularScore, healthScore, diets, steps } =
+    req.body;
 
   const newRecipe = await Recipe.create({
     title,
-    resumen,
-    puntuacion,
-    nivel,
-    pasoapaso,
+    summary,
+    spoonacularScore,
+    healthScore,
+    steps: steps,
   });
 
-  res.json(newRecipe);
+  diets.forEach(async (diet) => {
+    const foundDiet = await Diet.findAll({
+      where: {
+        nombre: diet,
+      },
+    });
+    if (foundDiet) newRecipe.addDiet(foundDiet);
+  });
+
+  res.json(req.body);
 });
 
 module.exports = router;

@@ -15,17 +15,17 @@ module.exports = (sequelize) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      resumen: {
+      summary: {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      puntuacion: {
+      spoonacularScore: {
         type: DataTypes.INTEGER,
       },
-      nivel: {
+      healthScore: {
         type: DataTypes.INTEGER,
       },
-      pasoapaso: {
+      steps: {
         type: DataTypes.ARRAY(DataTypes.TEXT),
       },
     },

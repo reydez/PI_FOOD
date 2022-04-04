@@ -79,6 +79,7 @@
 .iniciar button:focus {
   background: white;
   color: red;
+  border: 1px solid red;
 }
 
 @media (max-width: 810px) {

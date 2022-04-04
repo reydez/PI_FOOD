@@ -1,11 +1,11 @@
 form {
   width: 90%;
   max-width: 43rem;
-  padding: 1rem;
+  padding: 0.5rem 1rem;
   border-radius: 12px;
   background-color: white;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-  margin: 1.5rem auto;
+  margin: 1rem auto;
 }
 
 .btnRegresar {
@@ -50,7 +50,12 @@ form {
 
 .formControl input,
 .formControl label,
-.formControl textarea {
+.formControl textarea,
+.formControl select {
+  display: block;
+}
+
+.formControlStep textarea {
   display: block;
 }
 
@@ -59,8 +64,24 @@ form {
   margin-bottom: 0.5rem;
 }
 
+.formControlStep label {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
 .formControl input,
-.formControl textarea {
+.formControl textarea,
+ .formControl select {
+  font: inherit;
+  padding: 0.5rem;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  width: 20rem;
+  max-width: 100%;
+  transition: all 400ms;
+}
+
+.formControlStep textarea {
   font: inherit;
   padding: 0.5rem;
   border-radius: 4px;
@@ -72,6 +93,12 @@ form {
 
 .formControl input:focus,
 .formControl textarea:focus {
+  outline: none;
+  border-color: #d31919;
+  background-color: #fdd4d4;
+}
+
+.formControlStep textarea:focus {
   outline: none;
   border-color: #d31919;
   background-color: #fdd4d4;
@@ -92,9 +119,13 @@ form {
   resize: none;
 }
 
+.controlGroup .formControlStep textarea {
+  resize: none;
+}
+
 .formActions {
   /* border: 1px solid #d31919; */
-  width: 21rem;
+  width: 100%;
   margin-bottom: 1rem;
   display: flex;
   justify-content: end;
@@ -116,6 +147,7 @@ form {
 .formActions button:focus {
   background: white;
   color: red;
+  border: 1px solid red;
 }
 
 .invalid input,
@@ -139,6 +171,102 @@ form {
   font-weight: bolder;
 }
 
+.diets{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border: 1px solid rgb(206, 206, 206);
+  padding: .5rem;  
+  margin-bottom: .5rem;
+  border-radius: 12px;
+}
+
+.dietsContainer{
+  border: 1px solid rgb(206, 206, 206);
+  border-radius: 12px;
+  margin-left: 1rem;
+  margin-bottom: 1rem;
+  width: 100%;
+  max-width: 330px;
+  display: flex;
+  align-items: center;
+  overflow: auto;
+}
+
+.dietsContainer .diet {
+  width: max-content;
+  cursor: pointer;
+}
+
+.dietsContainer .diet h6{
+  margin: .5rem;
+  padding: .5rem;
+  list-style: none;
+  border-radius: 12px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  width: max-content;
+  border: 1px solid red;
+}
+
+.steps{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  border: 1px solid rgb(206, 206, 206);
+  padding: .5rem;  
+  margin-bottom: .5rem;
+  border-radius: 12px;
+}
+
+.stepsAction{
+  display: flex;
+  justify-content: end;
+}
+
+.stepsAction button{
+  font: inherit;
+  background-color: red;
+  color: white;
+  border: 1px solid red;
+  padding: 0.5rem 1.5rem;
+  margin: .5rem 0;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 400ms;
+}
+
+.stepsAction button:hover,
+.stepsAction button:focus {
+  background: white;
+  color: red;
+  border: 1px solid red;
+}
+
+.stepsContainer {
+  border: 1px solid rgb(206, 206, 206);
+  border-radius: 12px;
+  margin-left: 1rem;
+  margin-bottom: 1rem;
+  width: 100%;
+  max-height: 150px;
+  overflow: auto;
+}
+
+.stepsContainer .step ul{
+  margin: .5rem;
+  padding: .5rem;
+  list-style: none;
+  border-radius: 12px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  border: 1px solid red;
+  cursor: pointer;
+}
+
+.stepsContainer .step ul li:first-child{
+  border-bottom: 1px solid rgb(206, 206, 206);
+}
+
 @media (max-width: 440px) {
   .formActions button {
     width: 100%;
@@ -148,3 +276,5 @@ form {
     text-align: center;
   }
 }
+
+
