@@ -24,8 +24,13 @@ require("dotenv").config();
 
 // Syncing all the models at once.
 conn.sync({ force: false }).then(() => {
-  server.listen(3001, () => {
-    fillDiets();
+  server.listen(3001, async () => {
+    const diets = await Diet.findAll();
+
+    if (diets.length === 0) {
+      fillDiets();
+    }
+
     console.log("% listening at 3001"); // eslint-disable-line no-console
   });
 });

@@ -3,12 +3,26 @@ import classes from "./PaginaPrincipal.module.css";
 import RecipeCard from "./RecipeCard";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { getRecipes } from "../store/actions";
+import {
+  getRecipes,
+  sortByAlphabet,
+  sortByDiet,
+  sortByPuntos,
+} from "../store/actions";
+import NavBar from "./NavBar";
 
 const PaginaPrincipal = () => {
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const recipes = useSelector((state) => state.recipes);
+
+  const [actualPage, setActualPage] = useState(1);
+  const recetasPerPage = 9;
+  const numerosDePagina = [];
+
+  for (let i = 1; i <= Math.ceil(recipes.length / recetasPerPage); i++) {
+    numerosDePagina.push(i);
+  }
 
   useEffect(() => {
     const loadRecipes = async () => {
@@ -20,6 +34,32 @@ const PaginaPrincipal = () => {
     loadRecipes();
   }, [dispatch]);
 
+  const handlePage = (num) => {
+    setActualPage(num);
+  };
+
+  const handleSortByDiet = (e) => {
+    e.preventDefault();
+    dispatch(sortByDiet(e.target.value));
+    setActualPage(1);
+  };
+
+  const handleSortByAz = (e) => {
+    e.preventDefault();
+    dispatch(sortByAlphabet(e.target.value));
+    setActualPage(1);
+  };
+
+  const handleSortByPoints = (e) => {
+    e.preventDefault();
+    dispatch(sortByPuntos(e.target.value));
+    setActualPage(1);
+  };
+
+  var ultimoIdx = actualPage * recetasPerPage;
+  var primerIdx = ultimoIdx - recetasPerPage;
+  var actualRecipes = recipes.slice(primerIdx, ultimoIdx);
+
   return (
     <div className={classes.container}>
       <header>
@@ -30,25 +70,11 @@ const PaginaPrincipal = () => {
             </li>
           </ul>
         </div>
-
-        <nav>
-          <ul>
-            <li>
-              Busqueda por nombre: <input type="text" /> <button>Buscar</button>
-            </li>
-            <li>
-              Filtrar por tipo de dieta: <select name="" id=""></select>
-            </li>
-            <li>
-              Orden alfabetico:{" "}
-              <select name="" id="">
-                <option value="ASC">ASC</option>
-                <option value="DESC">DESC</option>
-              </select>
-            </li>
-          </ul>
-        </nav>
-
+        <NavBar
+          sort={handleSortByAz}
+          sortByDiet={handleSortByDiet}
+          sortByPoints={handleSortByPoints}
+        />
         <div>
           <ul>
             <li>
@@ -59,22 +85,18 @@ const PaginaPrincipal = () => {
       </header>
 
       <div className={classes.pageNumbers}>
-        <button>1</button>
-        <button>2</button>
-        <button>3</button>
-        <button>4</button>
-        <button>5</button>
-        <button>6</button>
-        <button>7</button>
-        <button>8</button>
-        <button>9</button>
-        <button>10</button>
+        {numerosDePagina &&
+          numerosDePagina.map((numero) => (
+            <button key={numero} onClick={() => handlePage(numero)}>
+              {numero}
+            </button>
+          ))}
       </div>
 
       <section>
         {isLoading && <h3>Loading...</h3>}
         {!isLoading &&
-          recipes.map((recipe) => (
+          actualRecipes.map((recipe) => (
             <RecipeCard
               key={recipe.id}
               id={recipe.id}

@@ -17,6 +17,9 @@ const DetalleDeReceta = () => {
     ? recetaDetails.image
     : "https://dummyimage.com/600x400/000/fff.jpg&text=Food+Image";
 
+  var replaced =
+    recetaDetails.summary && recetaDetails.summary.replace(/(<([^>]+)>)/gi, "");
+
   return (
     <Fragment>
       <div className={classes.btnRegresar}>
@@ -38,20 +41,18 @@ const DetalleDeReceta = () => {
                 {recetaDetails.title}
               </li>
               <li>
-                <span>Tipo de plato:</span>
-                {recetaDetails.dishTypes.map((dt) => "(" + dt + ")")}
+                {recetaDetails.dishTypes && <span>Tipo de plato:</span>}
+                {recetaDetails.dishTypes &&
+                  recetaDetails.dishTypes.map((tipo) => "(" + tipo + ") ")}
               </li>
               <li>
                 <span>Tipo de dieta:</span>
-                {recetaDetails.diets.map((diet) =>
-                  typeof diet === "object"
-                    ? "(" + diet.nombre + ")"
-                    : "(" + diet + ")"
-                )}
+                {recetaDetails.diets &&
+                  recetaDetails.diets.map((diet) => "(" + diet + ") ")}
               </li>
               <li>
                 <span>Resumen del plato:</span>
-                {recetaDetails.summary.replace(/(<([^>]+)>)/gi, "")}
+                {replaced}
               </li>
               <li>
                 <span>Puntuación:</span>
@@ -62,16 +63,17 @@ const DetalleDeReceta = () => {
                 {recetaDetails.healthScore}
               </li>
               <li>
-                <span>Paso a paso:</span>{" "}
-                <ul>
-                  {recetaDetails.steps.length === 0
-                    ? "Esta receta no tiene pasos"
-                    : recetaDetails.steps.map((step, index) => (
+                <span>Paso a paso:</span>
+                {Array.isArray(recetaDetails.steps) &&
+                recetaDetails.steps.length
+                  ? recetaDetails.steps.map((step, index) => (
+                      <ul>
                         <li>
                           <strong>Paso {index + 1}</strong>: {step}
                         </li>
-                      ))}
-                </ul>
+                      </ul>
+                    ))
+                  : "Esta receta no tiene pasos"}
               </li>
             </ul>
           </div>

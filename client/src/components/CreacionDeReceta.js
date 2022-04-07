@@ -17,11 +17,9 @@ const CreacionDeReceta = () => {
   const [pasos, setPasos] = useState([]);
   const dietsSelect = useSelector((state) => state.diets);
 
-  console.log(dietsSelect);
-
   useEffect(() => {
-    const loadDiets = () => {
-      dispatch(getDiets());
+    const loadDiets = async () => {
+      await dispatch(getDiets());
     };
     loadDiets();
   }, [dispatch]);

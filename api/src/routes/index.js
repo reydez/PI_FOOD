@@ -7,7 +7,7 @@ require("dotenv").config();
 
 const router = Router();
 
-const api_key = process.env.API_KEY;
+const api_key = process.env.API5;
 
 // Configurar los routers
 // Ejemplo: router.use('/auth', authRouter);
@@ -36,7 +36,19 @@ router.get("/recipes", async (req, res) => {
 
   const dbRecipes = await Recipe.findAll({ include: Diet });
 
-  const all = recipes.concat(dbRecipes);
+  const fixDbRecipes = dbRecipes
+    .map((recipe) => recipe.toJSON())
+    .map((fixDiet) => {
+      return {
+        ...fixDiet,
+        diets:
+          fixDiet.diets.length === 0
+            ? []
+            : fixDiet.diets.map((diet) => diet.nombre),
+      };
+    });
+
+  const all = recipes.concat(fixDbRecipes);
 
   if (req.query.title) {
     var { title } = req.query;
@@ -84,7 +96,19 @@ router.get("/recipes/:idReceta", async (req, res) => {
 
   const dbRecipes = await Recipe.findAll({ include: Diet });
 
-  const all = recipes.concat(dbRecipes);
+  const fixDbRecipes = dbRecipes
+    .map((recipe) => recipe.toJSON())
+    .map((fixDiet) => {
+      return {
+        ...fixDiet,
+        diets:
+          fixDiet.diets.length === 0
+            ? []
+            : fixDiet.diets.map((diet) => diet.nombre),
+      };
+    });
+
+  const all = recipes.concat(fixDbRecipes);
 
   const found = all.find((recipe) => recipe.id === Number(idReceta));
 
