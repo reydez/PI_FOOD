@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getDiets, getRecipesByTitle, getRecipes } from "../store/actions";
+import { getDiets, getRecipesByTitle } from "../store/actions";
 import { useDispatch, useSelector } from "react-redux";
 
 const NavBar = ({ sort, sortByDiet, sortByPoints }) => {

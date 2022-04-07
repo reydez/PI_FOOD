@@ -6,6 +6,7 @@ const RecipeCard = ({ title, image, diets, id }) => {
   const img = image
     ? image
     : "https://dummyimage.com/600x400/000/fff.jpg&text=Food+Image";
+
   return (
     <div className={classes.card}>
       <Link to={`/recipes/${id}`}>
