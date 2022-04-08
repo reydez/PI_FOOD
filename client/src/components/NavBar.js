@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { getDiets, getRecipesByTitle } from "../store/actions";
 import { useDispatch, useSelector } from "react-redux";
 
 const NavBar = ({ sort, sortByDiet, sortByPoints }) => {
   const dispatch = useDispatch();
   const [title, setTitle] = useState("");
+  const ordenAlfRef = useRef("");
+  const ordenPuntosRef = useRef("");
   const dietsSelect = useSelector((state) => state.diets);
 
   useEffect(() => {
@@ -23,6 +25,14 @@ const NavBar = ({ sort, sortByDiet, sortByPoints }) => {
   const handleSearchByTitle = () => {
     dispatch(getRecipesByTitle(title));
     setTitle("");
+    ordenAlfRef.current.value = "";
+    ordenPuntosRef.current.value = "";
+  };
+
+  const handleSortByDiet = (e) => {
+    sortByDiet(e);
+    ordenAlfRef.current.value = "";
+    ordenPuntosRef.current.value = "";
   };
 
   return (
@@ -42,7 +52,7 @@ const NavBar = ({ sort, sortByDiet, sortByPoints }) => {
         </li>
         <li>
           Por dieta:{" "}
-          <select name="" id="" onChange={(e) => sortByDiet(e)}>
+          <select name="" id="" onChange={(e) => handleSortByDiet(e)}>
             <option value="All">All</option>
             {dietsSelect.map((diet) => (
               <option value={diet.nombre} key={diet.id}>
@@ -53,7 +63,7 @@ const NavBar = ({ sort, sortByDiet, sortByPoints }) => {
         </li>
         <li>
           Orden alfabetico:{" "}
-          <select name="" id="" onChange={(e) => sort(e)}>
+          <select ref={ordenAlfRef} onChange={(e) => sort(e)}>
             <option value="">Seleccione orden</option>
             <option value="ASC">ASC</option>
             <option value="DESC">DESC</option>
@@ -61,7 +71,7 @@ const NavBar = ({ sort, sortByDiet, sortByPoints }) => {
         </li>
         <li>
           Por puntuación:{" "}
-          <select name="" id="" onChange={(e) => sortByPoints(e)}>
+          <select ref={ordenPuntosRef} onChange={(e) => sortByPoints(e)}>
             <option value="">Seleccione orden</option>
             <option value="BIGFIRST">Mas primero</option>
             <option value="LOWFIRST">Menos primero</option>
