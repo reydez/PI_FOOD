@@ -93,3 +93,9 @@
 .btnRegresar ul li a:hover {
   color: #ccc;
 }
+
+.loadingText{
+  
+  width: 100%;
+  text-align: center;
+}
