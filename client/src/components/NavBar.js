@@ -17,7 +17,7 @@ const NavBar = ({ sort, sortByDiet, sortByPoints }) => {
 
   const handleChange = (e) => {
     e.preventDefault();
-    setTitle(e.target.value);
+    setTitle(e.target.value.replace(/[^a-zA-Z\s]/gi, ""));
   };
 
   const handleSearchByTitle = () => {
