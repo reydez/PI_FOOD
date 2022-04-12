@@ -7,8 +7,8 @@ module.exports = (sequelize) => {
     "recipe",
     {
       id: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
+        type: DataTypes.INTEGER, // DataTypes.UUID
+        autoIncrement: true, // DataTypes.UUIDV4
         primaryKey: true,
       },
       title: {
