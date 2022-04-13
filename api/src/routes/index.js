@@ -1,6 +1,6 @@
 const { Router } = require("express");
 const axios = require("axios");
-const { Recipe, Diet, op } = require("../db.js");
+const { Recipe, Diet } = require("../db.js");
 require("dotenv").config();
 // Importar todos los routers;
 // Ejemplo: const authRouter = require('./auth.js');

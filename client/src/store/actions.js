@@ -49,7 +49,7 @@ export const addRecipe = (body) => async (dispatch) => {
 
 export const sortByDiet = (diet) => {
   return {
-    type: "SORT_BY_DIET",
+    type: "FILTER_BY_DIET",
     payload: diet,
   };
 };
