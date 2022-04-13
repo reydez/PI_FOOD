@@ -35,7 +35,7 @@ conn.sync({ force: false }).then(() => {
   });
 });
 
-const api_key = process.env.API1;
+const api_key = process.env.API2;
 
 const fillDiets = async () => {
   const response = await axios.get(

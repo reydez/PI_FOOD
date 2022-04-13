@@ -7,7 +7,7 @@ require("dotenv").config();
 
 const router = Router();
 
-const api_key = process.env.API1;
+const api_key = process.env.API2;
 
 // Configurar los routers
 // Ejemplo: router.use('/auth', authRouter);
